@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* 编译器memory barrier */
+#define barrier() __asm__ __volatile__("": : :"memory")
+//#define ACCESS_ONCE(x)    (*(volatile typeof(x) *)&(x))
+
 //跳过开始的若干帧，防止写端追赶上读操作的内存区域，读端可以不用加锁保护
 #define INGORE_FRAMES   2
 
@@ -29,7 +33,7 @@ imupool_t* imupool_create(int num)
   pool->items = (imu_item_t*)calloc(num, sizeof(imu_item_t));
   if (!pool->items)
   {
-    free(pool);
+    free((void *)pool);
     return NULL;
   }
 
@@ -45,8 +49,8 @@ void imupool_destroy(imupool_t* pool)
   if (pool)
   {
     if (pool->items)
-      free(pool->items);
-    free(pool);
+      free((void *)pool->items);
+    free((void *)pool);
   }
 }
 
@@ -61,6 +65,9 @@ int imupool_insert(imupool_t* pool, imu_item_t *item)
   int next = (pool->index + 1) % pool->num;
   memcpy(&pool->items[next], item, sizeof(imu_item_t));
   pool->index = next;
+  
+  barrier();  //comiler memory barrier
+  
   if (pool->used < pool->num)
     pool->used++;
   return IMUPOOL_NORMAL;
@@ -121,8 +128,8 @@ int imupool_request(imupool_t *pool, uint64_t reqns, uint64_t tolns, imu_item_t 
   int low, high;
   if (pool->used < pool->num)
   {
-    low = pool->num + INGORE_FRAMES;
-    high = pool->num + cur_index;
+    low = 0 + INGORE_FRAMES;
+    high = cur_index;
   }
   else
   {
@@ -157,8 +164,8 @@ int imupool_range_request(imupool_t *pool, uint64_t beginns, uint64_t endns, imu
   int low, high;
   if (pool->used < pool->num)
   {
-    low = pool->num + INGORE_FRAMES;
-    high = pool->num + cur_index;
+    low = 0 + INGORE_FRAMES;
+    high = cur_index;
   }
   else
   {
