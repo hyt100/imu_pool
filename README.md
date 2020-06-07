@@ -8,6 +8,9 @@
 参考资料：
 
 [无锁队列的实现-coolshell](https://coolshell.cn/articles/8239.html)
+
 [无锁队列的分析与设计](https://www.ibm.com/developerworks/cn/aix/library/au-multithreaded_structures2/index.html)
+
 [理解 Memory barrier (内存屏障)](https://zhuanlan.zhihu.com/p/102307258)
+
 [Linux内核kfifo的实现](https://www.linuxidc.com/Linux/2016-12/137936.htm)
