@@ -52,7 +52,7 @@ inline string toString(uint64_t ns)
 {
   char buf[64] = {0};
   uint64_t seconds = ns / (1000*1000*1000);
-  uint64_t ms = ns % (1000*1000*1000) / 1000;
+  uint64_t ms = ns % (1000*1000*1000) / (1000*1000);
   snprintf(buf, sizeof(buf)-1, "%" PRId64 ".%06" PRId64 "", seconds, ms);
   return buf;
 }

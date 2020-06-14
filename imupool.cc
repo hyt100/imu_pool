@@ -97,8 +97,8 @@ static int _binary_search_closest(imupool_t *pool, int low, int high, uint64_t t
   if (flag == 2)
     return low;
 
-  int delta_left  = IMUPOOL_ABS(target, pool->items[low % pool->num].timestamp);
-  int delta_right = IMUPOOL_ABS(target, pool->items[high % pool->num].timestamp);
+  int delta_left  = IMUPOOL_DIFF(target, pool->items[low % pool->num].timestamp);
+  int delta_right = IMUPOOL_DIFF(target, pool->items[high % pool->num].timestamp);
 
   if (delta_right <= delta_left)
     return high;

@@ -35,8 +35,8 @@ int binary_search_closest(int *a, int low, int high, int target, int flag = 0)
   if (flag == 2)
     return low;
 
-  int delta_left  = IMUPOOL_ABS(target, a[low]);
-  int delta_right = IMUPOOL_ABS(target, a[high]);
+  int delta_left  = IMUPOOL_DIFF(target, a[low]);
+  int delta_right = IMUPOOL_DIFF(target, a[high]);
 
   if (delta_right <= delta_left)
     return high;

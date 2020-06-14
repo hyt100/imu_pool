@@ -30,7 +30,7 @@ typedef struct {
   int operate; //lock flag
 } imupool_t;
 
-#define IMUPOOL_ABS(x, y)    (((x) >= (y)) ? ((x)-(y)) : ((y)-(x)))
+#define IMUPOOL_DIFF(x, y)    (((x) >= (y)) ? ((x)-(y)) : ((y)-(x)))
 #define IMUPOOL_MAX(x, y)    (((x) >= (y)) ? (x) : (y))
 #define IMUPOOL_MIN(x, y)    (((x) >= (y)) ? (y) : (x))
 
